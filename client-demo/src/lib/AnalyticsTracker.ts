@@ -21,7 +21,7 @@ class AnalyticsTracker {
   private initialized: boolean;
   private lastEvents: Map<string, number>;
 
-  constructor(apiEndpoint = 'http://localhost:3001/api/v1/events') {
+  constructor(apiEndpoint = 'http://104.248.75.249/api/v1/events') {
     this.apiEndpoint = apiEndpoint;
     this.sessionId = null;
     this.initialized = false;

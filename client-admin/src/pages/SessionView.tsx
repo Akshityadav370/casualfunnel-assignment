@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MyInfo from '../components/MyInfo';
+import { BACKEND_URL } from '../utils/constants';
 
 interface SessionEvent {
   id: string;
@@ -25,9 +26,7 @@ const SessionView = () => {
 
     const fetchEvents = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:3001/api/v1/events/session/${sessionId}`
-        );
+        const res = await fetch(`${BACKEND_URL}/session/${sessionId}`);
 
         if (!res.ok) {
           throw new Error('Failed to fetch session events');

@@ -1,8 +1,9 @@
+import { BACKEND_URL } from '@/constants/contants';
 import AnalyticsTracker from '@/lib/AnalyticsTracker';
 import { useEffect, useRef } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
-const tracker = new AnalyticsTracker('http://localhost:3001/api/v1/events');
+const tracker = new AnalyticsTracker(BACKEND_URL);
 
 export function useAnalytics() {
   const location = useLocation();

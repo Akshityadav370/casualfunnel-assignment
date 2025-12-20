@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MyInfo from '../components/MyInfo';
+import { BACKEND_URL } from '../utils/constants';
 
 interface SessionAnalytics {
   sessionId: string;
@@ -18,7 +19,7 @@ const Home = () => {
       try {
         setLoading(true);
 
-        const res = await fetch('http://localhost:3001/api/v1/events/sessions');
+        const res = await fetch(`${BACKEND_URL}/sessions`);
 
         if (!res.ok) {
           throw new Error('Failed to fetch sessions');
