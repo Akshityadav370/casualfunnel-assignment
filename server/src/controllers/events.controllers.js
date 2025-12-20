@@ -13,26 +13,45 @@ export const createEvent = async (req, res) => {
 };
 
 export const getAllSessions = async (req, res) => {
-  const sessions = await Event.aggregate([
-    {
-      $group: {
-        _id: '$sessionId',
-        eventCount: { $sum: 1 },
+  try {
+    const sessions = await Event.aggregate([
+      {
+        $group: {
+          _id: '$sessionId',
+          pageViewCount: {
+            $sum: {
+              $cond: [{ $eq: ['$eventType', 'page_view'] }, 1, 0],
+            },
+          },
+          clickCount: {
+            $sum: {
+              $cond: [{ $eq: ['$eventType', 'click'] }, 1, 0],
+            },
+          },
+        },
       },
-    },
-    {
-      $project: {
-        _id: 0,
-        sessionId: '$_id',
-        eventCount: 1,
+      {
+        $addFields: {
+          totalEvents: { $add: ['$pageViewCount', '$clickCount'] },
+        },
       },
-    },
-    {
-      $sort: { eventCount: -1 },
-    },
-  ]);
+      {
+        $sort: { totalEvents: -1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          sessionId: '$_id',
+          pageViewCount: 1,
+          clickCount: 1,
+        },
+      },
+    ]);
 
-  res.json(sessions);
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const getAllEventsBySessionId = async (req, res) => {
