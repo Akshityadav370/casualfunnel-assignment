@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <CartProvider>
         <Sonner />
-        <BrowserRouter basename='/demo'>
+        <BrowserRouter>
           <Routes>
             <Route path='/' element={<Index />} />
             <Route path='/product/:id' element={<ProductPage />} />

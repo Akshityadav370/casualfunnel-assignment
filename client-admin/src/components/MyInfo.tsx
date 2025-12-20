@@ -11,12 +11,12 @@ const MyInfo = () => {
           +91 9704590423
           <span className='mx-2 text-gray-400'>•</span>
           <a
-            href='http://104.248.75.249/demo/'
+            href='http://64.227.155.0'
             target='_blank'
             rel='noopener noreferrer'
             className='font-medium text-gray-700 hover:text-gray-900 underline underline-offset-4'
           >
-            http://104.248.75.249/demo
+            http://64.227.155.0/
           </a>
         </div>
       </div>
