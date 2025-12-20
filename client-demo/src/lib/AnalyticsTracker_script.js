@@ -40,7 +40,6 @@ class AnalyticsTracker {
 
   async sendEvent(event) {
     try {
-      // console.log('apiEndPoint', this.apiEndpoint);
       await fetch(this.apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,18 +113,6 @@ class AnalyticsTracker {
       timestamp: new Date(),
     });
   }
-
-  // init() {
-  //   if (typeof window === 'undefined' || this.initialized) return;
-
-  //   this.trackPageView();
-
-  //   document.addEventListener('click', (e) => {
-  //     this.trackClick(e);
-  //   });
-
-  //   this.initialized = true;
-  // }
 }
 
 export default AnalyticsTracker;

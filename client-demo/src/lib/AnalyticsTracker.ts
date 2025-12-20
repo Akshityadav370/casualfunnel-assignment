@@ -1,4 +1,26 @@
+interface AnalyticsEvent {
+  sessionId: string | null;
+  eventType: 'page_view' | 'click';
+  url: string;
+  timestamp: string | Date;
+  elementId?: string;
+  elementTag?: string;
+  x?: number;
+  y?: number;
+}
+
+interface HeatmapClick {
+  elementId: string;
+  x: number;
+  y: number;
+}
+
 class AnalyticsTracker {
+  private apiEndpoint: string;
+  private sessionId: string | null;
+  private initialized: boolean;
+  private lastEvents: Map<string, number>;
+
   constructor(apiEndpoint = 'http://localhost:3001/api/v1/events') {
     this.apiEndpoint = apiEndpoint;
     this.sessionId = null;
@@ -6,7 +28,7 @@ class AnalyticsTracker {
     this.lastEvents = new Map();
   }
 
-  isDuplicate(eventKey) {
+  private isDuplicate(eventKey: string): boolean {
     const now = Date.now();
     const lastTime = this.lastEvents.get(eventKey);
 
@@ -18,11 +40,11 @@ class AnalyticsTracker {
     return false;
   }
 
-  getCleanUrl() {
+  private getCleanUrl(): string {
     return window.location.origin + window.location.pathname;
   }
 
-  getSessionId() {
+  private getSessionId(): string | null {
     if (this.sessionId) return this.sessionId;
 
     if (typeof window === 'undefined') return null;
@@ -30,7 +52,9 @@ class AnalyticsTracker {
     let sessionId = localStorage.getItem('session_id');
 
     if (!sessionId) {
-      sessionId = `session_${Date.now()}_${Math.random().toString(36)}`;
+      sessionId = `session_${Date.now()}_${Math.random()
+        .toString(36)
+        .slice(2)}`;
       localStorage.setItem('session_id', sessionId);
     }
 
@@ -38,9 +62,8 @@ class AnalyticsTracker {
     return sessionId;
   }
 
-  async sendEvent(event) {
+  private async sendEvent(event: AnalyticsEvent): Promise<void> {
     try {
-      // console.log('apiEndPoint', this.apiEndpoint);
       await fetch(this.apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,7 +74,9 @@ class AnalyticsTracker {
     }
   }
 
-  async getHeatmapData(pageUrl = this.getCleanUrl()) {
+  async getHeatmapData(
+    pageUrl: string = this.getCleanUrl()
+  ): Promise<HeatmapClick[]> {
     try {
       const res = await fetch(
         `${this.apiEndpoint}/heatmap?url=${encodeURIComponent(pageUrl)}`
@@ -61,14 +86,14 @@ class AnalyticsTracker {
         throw new Error('Failed to fetch heatmap data');
       }
 
-      return await res.json();
+      return (await res.json()) as HeatmapClick[];
     } catch (err) {
       console.error('Heatmap fetch failed:', err);
       return [];
     }
   }
 
-  trackPageView() {
+  trackPageView(): void {
     const url = this.getCleanUrl();
     const eventKey = `page_view:${url}`;
 
@@ -80,17 +105,21 @@ class AnalyticsTracker {
     this.sendEvent({
       sessionId: this.getSessionId(),
       eventType: 'page_view',
-      url: url,
+      url,
       timestamp: new Date().toISOString(),
     });
   }
 
-  trackClick(clickEvent) {
-    const target = clickEvent.target.closest('[data-analytics-id]');
+  trackClick(clickEvent: MouseEvent): void {
+    const target = (clickEvent.target as HTMLElement | null)?.closest(
+      '[data-analytics-id]'
+    ) as HTMLElement | null;
 
     if (!target) return;
 
     const elementId = target.dataset.analyticsId;
+    if (!elementId) return;
+
     const eventKey = `click:${elementId}`;
 
     if (this.isDuplicate(eventKey)) {
@@ -107,25 +136,13 @@ class AnalyticsTracker {
       sessionId: this.getSessionId(),
       eventType: 'click',
       url: this.getCleanUrl(),
-      elementId: target.dataset.analyticsId,
+      elementId,
       elementTag: target.tagName.toLowerCase(),
       x,
       y,
       timestamp: new Date(),
     });
   }
-
-  // init() {
-  //   if (typeof window === 'undefined' || this.initialized) return;
-
-  //   this.trackPageView();
-
-  //   document.addEventListener('click', (e) => {
-  //     this.trackClick(e);
-  //   });
-
-  //   this.initialized = true;
-  // }
 }
 
 export default AnalyticsTracker;

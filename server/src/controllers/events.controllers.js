@@ -55,7 +55,7 @@ export const getHeapMapData = async (req, res) => {
       url,
       eventType: 'click',
     },
-    { x: 1, y: 1, createdAt: 1, _id: 0 }
+    { x: 1, y: 1, createdAt: 1, _id: 0, elementId: 1, elementTag: 1 }
   ).sort({ createdAt: 1 });
 
   res.json(clicks);

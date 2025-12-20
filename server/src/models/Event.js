@@ -13,6 +13,8 @@ const eventSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    elementId: { type: String },
+    elementTag: { type: String },
     url: {
       type: String,
       required: true,
