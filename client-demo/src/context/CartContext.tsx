@@ -1,10 +1,5 @@
 import type { Product } from '@/data/products';
-import React, {
-  createContext,
-  useContext,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
 export interface CartItem extends Product {
   quantity: number;

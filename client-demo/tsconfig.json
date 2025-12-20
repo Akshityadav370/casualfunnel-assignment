@@ -5,9 +5,12 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "types": ["vite/client"]
   }
 }

@@ -18,13 +18,11 @@ interface HeatmapClick {
 class AnalyticsTracker {
   private apiEndpoint: string;
   private sessionId: string | null;
-  private initialized: boolean;
   private lastEvents: Map<string, number>;
 
   constructor(apiEndpoint = 'http://104.248.75.249/api/v1/events') {
     this.apiEndpoint = apiEndpoint;
     this.sessionId = null;
-    this.initialized = false;
     this.lastEvents = new Map();
   }
 
