@@ -17,7 +17,7 @@ The project is split into:
 http://104.248.75.249/
 
 **Demo App**  
-http://104.248.75.249/demo
+http://64.227.155.0/
 
 **Backend Base URL**  
 http://104.248.75.249/api/v1/events
