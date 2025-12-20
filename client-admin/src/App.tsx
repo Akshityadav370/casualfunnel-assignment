@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Home from './pages/Home';
+import SessionView from './pages/SessionView';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<div>Hi</div>} />
-        <Route path='/session/:id' element={<div>session</div>} />
+        <Route path='/' element={<Home />} />
+        <Route path='/session/:sessionId' element={<SessionView />} />
       </Routes>
     </BrowserRouter>
   );
