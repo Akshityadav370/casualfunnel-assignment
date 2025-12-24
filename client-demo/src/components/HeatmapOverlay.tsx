@@ -30,7 +30,7 @@ export default function HeatmapOverlay({ tracker }: HeatmapOverlayProps) {
       setLoading(true);
       const data = await tracker.getHeatmapData(
         undefined,
-        sessionId || localStorage.getItem('sessionId') || ''
+        sessionId || localStorage.getItem('session_id') || ''
       );
       setClicks(data);
       setLoading(false);
