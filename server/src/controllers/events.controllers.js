@@ -63,19 +63,29 @@ export const getAllEventsBySessionId = async (req, res) => {
 };
 
 export const getHeapMapData = async (req, res) => {
-  const { url } = req.query;
+  const { url, sessionId } = req.query;
 
   if (!url) {
     return res.status(400).json({ error: 'url query param required' });
   }
 
-  const clicks = await Event.find(
-    {
-      url,
-      eventType: 'click',
-    },
-    { x: 1, y: 1, createdAt: 1, _id: 0, elementId: 1, elementTag: 1 }
-  ).sort({ createdAt: 1 });
+  const query = {
+    url,
+    eventType: 'click',
+  };
+
+  if (sessionId) {
+    query.sessionId = sessionId;
+  }
+
+  const clicks = await Event.find(query, {
+    x: 1,
+    y: 1,
+    createdAt: 1,
+    _id: 0,
+    elementId: 1,
+    elementTag: 1,
+  }).sort({ createdAt: 1 });
 
   res.json(clicks);
 };
