@@ -42,10 +42,10 @@ class AnalyticsTracker {
     return window.location.origin + window.location.pathname;
   }
 
-  private getSessionId(): string | null {
+  private getSessionId(): string {
     if (this.sessionId) return this.sessionId;
 
-    if (typeof window === 'undefined') return null;
+    // if (typeof window === 'undefined') return null;
 
     let sessionId = localStorage.getItem('session_id');
 
@@ -74,13 +74,15 @@ class AnalyticsTracker {
 
   async getHeatmapData(
     pageUrl: string = this.getCleanUrl(),
-    sessionIdToTrack: string
+    sessionIdToTrack?: string
   ): Promise<HeatmapClick[]> {
     try {
       const res = await fetch(
         `${this.apiEndpoint}/heatmap?url=${encodeURIComponent(
           pageUrl
-        )}&sessionId=${encodeURIComponent(sessionIdToTrack)}`
+        )}&sessionId=${encodeURIComponent(
+          sessionIdToTrack ?? this.getSessionId()
+        )}`
       );
 
       if (!res.ok) {
