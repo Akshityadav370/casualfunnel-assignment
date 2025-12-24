@@ -129,7 +129,7 @@ const SessionView = () => {
                   <td className='px-4 py-3 text-sm'>
                     {event.eventType === 'click' ? (
                       <a
-                        href={`${event.url}?heatmap=true`}
+                        href={`${event.url}?heatmap=true&sessionId=${sessionId}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='text-purple-600 hover:text-purple-800 underline'

@@ -1,5 +1,6 @@
 import type AnalyticsTracker from '@/lib/AnalyticsTracker';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 interface HeatmapClick {
   elementId: string;
@@ -21,11 +22,16 @@ export default function HeatmapOverlay({ tracker }: HeatmapOverlayProps) {
   const [clicks, setClicks] = useState<HeatmapClick[]>([]);
   const [points, setPoints] = useState<HeatmapPoint[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get('sessionId');
 
   useEffect(() => {
     async function loadHeatmapData() {
       setLoading(true);
-      const data = await tracker.getHeatmapData();
+      const data = await tracker.getHeatmapData(
+        undefined,
+        sessionId || localStorage.getItem('sessionId') || ''
+      );
       setClicks(data);
       setLoading(false);
     }

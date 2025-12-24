@@ -73,11 +73,14 @@ class AnalyticsTracker {
   }
 
   async getHeatmapData(
-    pageUrl: string = this.getCleanUrl()
+    pageUrl: string = this.getCleanUrl(),
+    sessionIdToTrack: string
   ): Promise<HeatmapClick[]> {
     try {
       const res = await fetch(
-        `${this.apiEndpoint}/heatmap?url=${encodeURIComponent(pageUrl)}`
+        `${this.apiEndpoint}/heatmap?url=${encodeURIComponent(
+          pageUrl
+        )}&sessionId=${encodeURIComponent(sessionIdToTrack)}`
       );
 
       if (!res.ok) {
