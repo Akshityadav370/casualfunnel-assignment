@@ -16,7 +16,12 @@ export function useAnalytics() {
 
     if (!hasInitialized.current && !isHeatmapMode) {
       tracker.trackPageView();
-      handleClick = (e: MouseEvent) => tracker.trackClick(e);
+
+      const currentUrl = window.location.origin + window.location.pathname;
+      // const currentUrl = undefined;
+
+      handleClick = (e: MouseEvent) => tracker.trackClick(e, currentUrl);
+
       document.addEventListener('click', handleClick);
       console.log(`Page view tracked: ${location.pathname}`);
       hasInitialized.current = true;

@@ -113,7 +113,7 @@ class AnalyticsTracker {
     });
   }
 
-  trackClick(clickEvent: MouseEvent): void {
+  trackClick(clickEvent: MouseEvent, sourceUrl?: string): void {
     const target = (clickEvent.target as HTMLElement | null)?.closest(
       '[data-analytics-id]'
     ) as HTMLElement | null;
@@ -138,7 +138,7 @@ class AnalyticsTracker {
     this.sendEvent({
       sessionId: this.getSessionId(),
       eventType: 'click',
-      url: this.getCleanUrl(),
+      url: sourceUrl || this.getCleanUrl(),
       elementId,
       elementTag: target.tagName.toLowerCase(),
       x,
